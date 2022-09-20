@@ -15,8 +15,7 @@ def example_solution(request):
     students = Student.objects.all()
 
     for student in students:
-        print(
-            f'First Name: {student.first_name} Last Name: {student.last_name} GPA: {student.gpa}')
+        print(f'First Name: {student.first_name} Last Name: {student.last_name} GPA: {student.gpa}')
 
     return complete(request)
 
@@ -59,6 +58,11 @@ SELECT `school_db_student`.`id`,
 # Print out each student's full name and gpa to the terminal
 def problem_one(request):
 
+    students = Student.objects.filter(gpa__gt=3).order_by('-gpa')
+
+    for student in students:
+        print(f'First name: {student.first_name}, Last name: {student.last_name}, GPA: {student.gpa}')
+
     return complete(request)
 
 
@@ -97,6 +101,11 @@ SELECT `school_db_student`.`id`,
 # Order by hire date ascending
 # Print out the instructor's full name and hire date to the terminal
 def problem_two(request):
+    
+    instructors = Instructor.objects.filter(hire_date__lt='2010-01-01').order_by('hire_date')
+      
+    for instructor in instructors:
+        print(f'First name: {instructor.first_name}, Last name: {instructor.last_name}, Hire date: {instructor.hire_date}')
 
     return complete(request)
 
@@ -138,6 +147,15 @@ SELECT `school_db_instructor`.`id`,
 # Print the instructors name and courses that he belongs to in the terminal
 # (Do not hard code his name in the print)
 def problem_three(request):
+
+    courses = Course.objects.filter(instructor_id=2)
+    instructor = Instructor.objects.filter(id=2)
+
+    for instructor in instructor:
+        print(f'Instructor: {instructor.first_name} {instructor.last_name}')
+
+    for courses in courses:
+        print(f'Course: {courses.name}')
 
     return complete(request)
 
@@ -185,6 +203,16 @@ SELECT `school_db_instructor`.`id`,
 # Get the count of students, courses, and instructors and print them in the terminal
 def problem_four(request):
 
+    students = Student.objects.count()
+    courses = Course.objects.count()
+    instructors = Instructor.objects.count()
+    
+    print(f'Students Count: {students}')
+
+    print(f'Courses Count: {courses}')
+
+    print(f'Instructors Count: {instructors}')
+
     return complete(request)
 
 
@@ -229,6 +257,13 @@ SELECT COUNT(*) AS `__count`
 # NOTE every time you execute this function a duplicate student will be created with a different primary key number
 def problem_five(request):
 
+    # student = Student.objects.create(id=11, first_name='Iggy', last_name='Pierre', year=2011, gpa=4.8)
+    # print(f'''
+    # Id: {student.id}
+    # Full Name: {student.first_name} {student.last_name}
+    # Year: {student.year}
+    # GPA: {student.gpa}''')
+
     return complete(request)
 
 
@@ -257,12 +292,21 @@ VALUES ('Kyle', 'Harwood', 2022, 3.0)
 
 
 # Query the previoiusly created student by the id and update the "gpa" to a new value
-# Then query the studets table to get that student by their id
+# Then query the students table to get that student by their id
 # Print the new student's id, full name, and gpa to the terminal
 def problem_six(request):
 
     # Make sure to set this equal to the primary key of the row you just created!
     student_id = 11
+    Student.objects.filter(pk=student_id).update(gpa=4.0)
+    students = Student.objects.filter(pk=student_id)
+
+    for student in students:
+
+      print(f'''
+      Id: {student.id}
+      Full name: {student.first_name} {student.last_name}
+      GPA: {student.gpa}''')
 
     return complete(request)
 
@@ -310,6 +354,8 @@ def problem_seven(request):
 
     # Make sure to set this equal to the primary key of the row you just created!
     student_id = 11
+    Student.objects.filter(pk=student_id).delete()
+    student = Student.objects.filter(pk=student_id)
 
     try:
         student = Student.objects.get(pk=student_id)
@@ -367,6 +413,13 @@ SELECT `school_db_student`.`id`,
 # Print out the instructors full name and number of courses to the console
 def bonus_problem(request):
 
+    # courses = Course.objects.filter(instructor_id).count()
+    # # Instructor.objects.filter(id=2)
+    # # courses = Course.objects.filter(instructor_id=2)
+    # # instructor = Instructor.objects.filter(id=2)
+
+    # print(f'Number: {courses}')
+    
     return complete(request)
 
 
