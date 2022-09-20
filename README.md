@@ -1,2 +1,1 @@
-# ORM-Querying
-Tech Stack: Python, MySQL 
+# DjangoQueryingLab_PY_Starter
